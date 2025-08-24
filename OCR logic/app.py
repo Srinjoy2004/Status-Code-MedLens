@@ -30,16 +30,36 @@ app = Flask(__name__)
 # --- Gemini Model and Prompt Configuration ---
 # This is the advanced prompt we discussed. You can customize it further.
 PROMPT = """
-Analyze this image of a doctor's prescription. 
-Identify each medication, its dosage strength, and the frequency or instructions for taking it.
-Your response MUST be a valid JSON object.
-The JSON object should have a key "medications" which is an array of objects.
-Each object in the array should represent one medication and have the following keys: "name", "dosage", "frequency".
-If you cannot find any medications because the image is blurry or the handwriting is illegible, the "medications" array should be empty, and you should add a key "reason" explaining the issue.
+Analyze this image of a doctor's prescription.
 
-Example empty response:
-{ "medications": [], "reason": "The handwriting is illegible." }
-also do one thing if no such medicinine name exist then show the name which u are predicting also show no so sure about the medicine name consult doctor
+Identify each medication, its name, dosage strength, frequency/instructions, and quantity.
+
+Return a valid JSON object only.
+
+Rules:
+
+JSON must contain a key "medications" which is an array of objects.
+
+Each medication object must have:
+
+"name" → predicted or exact name of the medicine
+
+"dosage" → strength/dosage mentioned
+
+"frequency" → instructions (e.g., once daily, after meals, etc.)
+
+"quantity" → if not mentioned, default to 2.
+
+If the handwriting is illegible or no medicines are found, return:
+
+{ 
+  "medications": [], 
+  "reason": "The handwriting is illegible." 
+}
+
+
+If a medicine name cannot be fully recognized or is uncertain, still include the predicted name under "name" and add a note in "reason" like:
+"Not sure about the medicine name, please consult a doctor."
 """
 
 def is_image(file_stream):
