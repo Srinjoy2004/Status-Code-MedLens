@@ -25,7 +25,7 @@ app = Flask(__name__)
 CORS(app)    
 
 # --- Flask App Initialization ---
-app = Flask(__name__)
+#app = Flask(__name__)
 
 # --- Gemini Model and Prompt Configuration ---
 # This is the advanced prompt we discussed. You can customize it further.

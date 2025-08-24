@@ -1,8 +1,8 @@
 require('dotenv').config();
-// const { nanoid } = require('nanoid');
 const express = require('express');
-const connectDB = require('./config/db'); // Import DB connection
-const medicineRoutes = require('./routes/medicineRoutes'); // Import routes
+const cors = require('cors'); // 1. Import the cors package
+const connectDB = require('./config/db');
+const medicineRoutes = require('./routes/medicineRoutes');
 
 // Connect to the database
 connectDB();
@@ -11,10 +11,11 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
+app.use(cors()); // 2. Use cors as middleware
 app.use(express.json());
 
 // Use the medicine routes
-app.use('/api', medicineRoutes); // Prefix routes with /api
+app.use('/api', medicineRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
